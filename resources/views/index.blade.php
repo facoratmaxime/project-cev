@@ -10,7 +10,7 @@
     <div class=" flex items-top justify-center bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
         <div class="row">
             <div class="col-sm-12">
-                <form action="{{ route('process.upload') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('process.upload') }}" method="POST" enctype="multipart/form-data" id="form1">
                     @csrf
                     <div class="form-group">
                         <div class="custom-file">
@@ -20,7 +20,6 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success">Valider</button>
-                    <button type="rest" class="btn btn-secondary">Effacer</button>
                 </form>
 
             </div>
@@ -33,9 +32,9 @@
             <a href="https://github.com/facoratmaxime/project-cev" target="_blank" class="btn btn-warning">Lien Github</a>
     </div>
     <script>
-        $('#customFile').on('change',function(){
+        $('#customFile').on('change',function(e){
             //get the file name
-            var fileName = $(this).val();
+            var fileName = e.target.files[0].name;
             //replace the "Choose a file" label
             $(this).next('.custom-file-label').html(fileName);
         })

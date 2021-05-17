@@ -30,9 +30,11 @@ class ProcessController extends Controller
             if (!empty($request->file('customeFile'))) {
                 $file = $request->file('customFile');
                 $csvAsArray = array_map('str_getcsv', file($file));
-            } else {
+            } elseif (Storage::disk('local')->exists('resultats_users.csv')) {
                 $file = Storage::disk('local')->path('resultats_users.csv');
                 $csvAsArray = array_map('str_getcsv', file($file));
+            } else {
+                throw new Exception("File not found");
             }
         } catch (Exception $e) {
             $request->session()->flash('alert_danger', "Une erreur est survenue, le CSV est corrumpu ou invalide");

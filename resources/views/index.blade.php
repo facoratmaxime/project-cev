@@ -29,6 +29,7 @@
 
     <div class="container">
             <a class="btn btn-primary" href="{{ route('process.upload_without_upload') }}">Utiliser le CSV par défaut</a>
+            <a class="btn btn-default" download href="{{ Storage::disk('local')->url('resultats_users.csv') }}">Télécharger le CSV par défaut</a>
             <a href="https://github.com/facoratmaxime/project-cev" target="_blank" class="btn btn-warning">Lien Github</a>
     </div>
     <script>

@@ -32,7 +32,6 @@ class ProcessController extends Controller
                 $csvAsArray = array_map('str_getcsv', file($file));
             } else {
                 $file = Storage::disk('local')->path('resultats_users.csv');
-
                 $csvAsArray = array_map('str_getcsv', file($file));
             }
         } catch (Exception $e) {
@@ -102,7 +101,7 @@ class ProcessController extends Controller
             $request->session()->flash('alert_danger', "Une erreur est survenue, le traitement a été stoppé lors de l'initialisation");
             return redirect('index');
         }
-        
+
         try {
             foreach ($data['data'] as $item) {
                 $userID = $item[$this::USER];

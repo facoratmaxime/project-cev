@@ -88,6 +88,8 @@ class ProcessController extends Controller
                             $this::ITEM4 => 0
                         ];
                     }
+
+                    // IF TIMETABLE IS NOT INTO PUBLISHED TIME RANGES
                     $results[$userID][$this::HORS_PERIODE] = [
                         $this::ITEM1 => 0,
                         $this::ITEM2 => 0,
@@ -100,6 +102,7 @@ class ProcessController extends Controller
             $request->session()->flash('alert_danger', "Une erreur est survenue, le traitement a été stoppé lors de l'initialisation");
             return redirect('index');
         }
+        
         try {
             foreach ($data['data'] as $item) {
                 $userID = $item[$this::USER];

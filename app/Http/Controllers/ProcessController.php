@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 class ProcessController extends Controller
 {
 
+    const HORS_PERIODE = "HORS PERIODE";
+    const P1 = "PERIODE 1";
+    const P2 = "PERIODE 2";
+    const P3 = "PERIODE 3";
+
     const POINT_EUROS_VAL = "0.001";
     const USER = "UTILISATEUR";
     const ITEM1 = "PRODUIT 1";
@@ -15,6 +20,7 @@ class ProcessController extends Controller
     const ITEM3 = "PRODUIT 3";
     const ITEM4 = "PRODUIT 4";
     const DATE = "DATE";
+    const DATE_FORMAT = "d/m/Y";
 
     public function upload(Request $request)
     {
@@ -28,17 +34,17 @@ class ProcessController extends Controller
         $defs = [];
 
         $timeslots = [
-            'PERIODE 1' => [
-                'start' => DateTime::createFromFormat("d/m/Y", "01/01/2021"),
-                'end' => DateTime::createFromFormat("d/m/Y", "30/04/2021")
+            $this::P1 => [
+                'start' => DateTime::createFromFormat($this::DATE_FORMAT, "01/01/2021"),
+                'end' => DateTime::createFromFormat($this::DATE_FORMAT, "30/04/2021")
             ],
-            'PERIODE 2' => [
-                'start' => DateTime::createFromFormat("d/m/Y", "01/05/2021"),
-                'end' => DateTime::createFromFormat("d/m/Y", "31/08/2021"),
+            $this::P2 => [
+                'start' => DateTime::createFromFormat($this::DATE_FORMAT, "01/05/2021"),
+                'end' => DateTime::createFromFormat($this::DATE_FORMAT, "31/08/2021"),
             ],
-            'PERIODE 3' => [
-                'start' => DateTime::createFromFormat("d/m/Y", "01/10/2021"),
-                'end' => DateTime::createFromFormat("d/m/Y", "31/12/2021"),
+            $this::P3 => [
+                'start' => DateTime::createFromFormat($this::DATE_FORMAT, "01/10/2021"),
+                'end' => DateTime::createFromFormat($this::DATE_FORMAT, "31/12/2021"),
             ]
         ];
 
@@ -55,6 +61,7 @@ class ProcessController extends Controller
 
         $results = [];
 
+        // INTIALIZATION OF DEFAULT VALUES
         foreach ($data['data'] as $key => $item) {
             $userID = $item[$this::USER];
             if (!in_array($userID, $results)) {
@@ -66,7 +73,7 @@ class ProcessController extends Controller
                         $this::ITEM4 => 0
                     ];
                 }
-                $results[$userID]["HORS_PERIODE"] = [
+                $results[$userID][$this::HORS_PERIODE] = [
                     $this::ITEM1 => 0,
                     $this::ITEM2 => 0,
                     $this::ITEM3 => 0,
@@ -79,9 +86,8 @@ class ProcessController extends Controller
         foreach ($data['data'] as $item) {
             $userID = $item[$this::USER];
 
-
-            $period = DateTime::createFromFormat("d/m/Y", $item[$this::DATE]);
-            $periodKey = "HORS_PERIODE";
+            $period = DateTime::createFromFormat($this::DATE_FORMAT, $item[$this::DATE]);
+            $periodKey = $this::HORS_PERIODE;
 
             foreach ($timeslots as $targetKey => $targetPeriod) {
                 if ($targetPeriod['start'] <= $period && $targetPeriod['end'] >= $period) {
@@ -101,8 +107,8 @@ class ProcessController extends Controller
                         }
                         break;
                     case $this::ITEM3:
-                        $modulo = (int)$value / 2;
-                        $results[$userID][$periodKey][$this::ITEM3] += ((int)$modulo * 15);
+                        $blockBy2Units = (int)$value / 2;
+                        $results[$userID][$periodKey][$this::ITEM3] += ((int)$blockBy2Units * 15);
                         break;
                     case $this::ITEM4:
                         $results[$userID][$periodKey][$this::ITEM4] += ($value * 35);
@@ -119,7 +125,8 @@ class ProcessController extends Controller
         }
 
 
-        return view('results', compact('results', 'headerCols'));
+        $dateFormat = $this::DATE_FORMAT;
+        return view('results', compact('results', 'headerCols', 'timeslots', 'dateFormat'));
     }
 
     private function checkCSV($headers, $data)

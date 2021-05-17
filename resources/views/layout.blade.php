@@ -24,6 +24,53 @@
         </style>
     </head>
     <body class="antialiased">
+        @if (Session::get('alert_info'))
+        @php
+            $alertType = 'info';
+            $alertCss = 'info';
+            $alertIcon = '<i class="fas fa-info-circle"></i>';
+        @endphp
+    @elseif (Session::get('alert_success'))
+        @php
+            $alertType = 'success';
+            $alertCss = 'success';
+            $alertIcon = '<i class="fas fa-check-circle"></i>';
+        @endphp
+    @elseif (Session::get('alert_danger'))
+        @php
+            $alertType = 'danger';
+            $alertCss = 'danger';
+            $alertIcon = '<i class="fas fa-exclamation-triangle"></i>';
+        @endphp
+    @elseif (Session::get('alert_warning'))
+        @php
+            $alertType = 'warning';
+            $alertCss = 'warning';
+            $alertIcon = '<i class="fas fa-exclamation-circle"></i>';
+        @endphp
+    @elseif (Session::get('alert_primary'))
+        @php
+            $alertType = 'primary';
+            $alertCss = 'primary';
+            $alertIcon = '<i class="fas fa-question-circle"></i>';
+        @endphp
+    @elseif (Session::get('alert_access_denied'))
+        @php
+            $alertType = 'access_denied';
+            $alertCss = 'warning';
+            $alertIcon = '<i class="fas fa-minus-circle"></i>';
+        @endphp
+    @endif
+
+    @if (isset($alertType))
+        <div class="alertTop alert alert-general alert-{{ $alertCss }} alert-dismissible fade show text-center"
+            role="alert">
+            {!! $alertIcon !!} {!! Session::get('alert_' . $alertType) !!}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
         @yield('content')
     </body>
     </html>

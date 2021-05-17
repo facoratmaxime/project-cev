@@ -19,7 +19,8 @@
                             <label class="custom-file-label" for="customFile">Uploader votre fichier ici</label>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Valider</button>
+                    <button type="submit" class="btn btn-success">Valider</button>
+                    <button type="rest" class="btn btn-secondary">Effacer</button>
                 </form>
 
             </div>
@@ -28,10 +29,15 @@
     </div>
 
     <div class="container">
-
             <a class="btn btn-primary" href="{{ route('process.upload_without_upload') }}">Utiliser le CSV par défaut</a>
-
             <a href="https://github.com/facoratmaxime/project-cev" target="_blank" class="btn btn-warning">Lien Github</a>
-    
     </div>
+    <script>
+        $('#customFile').on('change',function(){
+            //get the file name
+            var fileName = $(this).val();
+            //replace the "Choose a file" label
+            $(this).next('.custom-file-label').html(fileName);
+        })
+    </script>
 @endsection

@@ -21,9 +21,17 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Valider</button>
                 </form>
+
             </div>
         </div>
-    </div>
-    <button class="btn btn-warning">Lien Github <a href="https://github.com/facoratmaxime/project-cev">ici</a></button>
 
+    </div>
+
+    <div class="container">
+    <div class="row">
+        <a class="btn btn-primary" href="{{ route('process.upload_without_upload') }}">Utiliser le CSV par défaut</a>
+
+    <button class="btn btn-warning">Lien Github <a href="https://github.com/facoratmaxime/project-cev">ici</a></button>
+</div>
+</div>
 @endsection

@@ -20,3 +20,4 @@ Route::get('/', function () {
 
 
 Route::post('upload_file', [ProcessController::class, 'upload'])->name('process.upload');
+Route::get('no_upload_file', [ProcessController::class, 'upload'])->name('process.upload_without_upload');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProcessController extends Controller
 {
@@ -24,8 +25,14 @@ class ProcessController extends Controller
 
     public function upload(Request $request)
     {
-        $file = $request->file('customFile');
-        $csvAsArray = array_map('str_getcsv', file($file));
+        if (!empty($request->file('customeFile'))) {
+            $file = $request->file('customFile');
+            $csvAsArray = array_map('str_getcsv', file($file));
+        } else {
+            $file = Storage::disk('local')->path('resultats_users.csv');
+
+            $csvAsArray = array_map('str_getcsv', file($file));
+        }
 
         $processed = array_map(function ($a) {
             return array_pop($a);
